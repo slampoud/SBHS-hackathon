@@ -1,6 +1,11 @@
 commands: 
 takeoff 22
 waypoint 16
-land 
+land{
+  21 LAND
+  23 LAND_LOCAL
+  85 VTOL_LAND
+  189 LAND_START
+  190 DO_RALLY_LAND}
 
 frame we are using: GLOBAL_RELATIVE_ALT
