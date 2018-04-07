@@ -1,0 +1,6 @@
+commands: 
+takeoff 22
+waypoint 16
+land 
+
+frame we are using: GLOBAL_RELATIVE_ALT
