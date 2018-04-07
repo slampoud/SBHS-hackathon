@@ -48,8 +48,8 @@ def burrito(me, burrito):
 def generateWaypoint(coord_list):
     begin = "QGC WPL 110\n";
     begin += "0\t1\t3\t112\t1\t0\t0\t0\t0\t0\t0\t1\n";
-    begin += "1\t0\t3\t211\t0\t0\t0\t0\t0\t0\t0\t1\n";
-    begin += "2\t0\t3\t22\t0\t0\t0\t0\t0.0\t0.0\t20.0\t1\n";
+    grab = "\t0\t3\t211\t0\t0\t0\t0\t0\t0\t0\t1\n";
+    lift = "\t0\t3\t22\t0\t0\t0\t0\t0.0\t0.0\t20.0\t1\n";
 
     u = uuid.uuid4()
 
@@ -58,6 +58,8 @@ def generateWaypoint(coord_list):
     line_num = 3
 
     output.write(begin)
+    output.write(str(1) + grab)
+    output.write(str(2) + lift)
 
     for coord in coord_list:
         coords.append(coord.split(','))
@@ -66,14 +68,25 @@ def generateWaypoint(coord_list):
         output.write(str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n")
         line_num += 1
 
-    output.write(
-        str(line_num) + "\t0\t3\t21\t0\t0\t0\t0\t" + coords[len(coords) - 1][0] + "\t" + coords[len(coords) - 1][
-            1] + "\t0\t1\n")
+    land = "\t0\t3\t21\t0\t0\t0\t0\t" + coords[len(coords) - 1][0] + "\t" + coords[len(coords) - 1][1] + "\t0\t1\n"
+    output.write(str(line_num) + land)
     line_num += 1
-    output.write(str(line_num) + "\t0\t3\t211\t1\t0\t0\t0\t0\t0\t0\t1\n")
+    drop = "\t0\t3\t211\t1\t0\t0\t0\t0\t0\t0\t1\n"
+    output.write(str(line_num) + drop)
+    line_num += 1
+    output.write(str(line_num) + lift)
+    line_num += 1
 
+    for i in range(len(coords) - 2, -1)
+        output.write(str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n")
+        line_num += 1
+
+    return_to_start = "\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t1\n"
+    output.write(str(line_num) + return_to_start)
+    line_num += 1
+    output.write(str(line_num) + drop)
     output.close()
-   
+
     return str(u)
 
 
