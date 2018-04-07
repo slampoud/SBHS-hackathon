@@ -1,0 +1,34 @@
+from flask import Flask, session, Blueprint, render_template, send_file, url_for, abort, redirect, request, make_response
+import router.py
+import waypoints.py
+
+print("Setting up...")
+application = Flask(__name__)
+
+@application.route("/", methods=["POST", "GET"])
+def slack_response():
+    print("Got something")
+    command =  request.form.get("command")
+    text = request.form.get("text")
+
+    
+
+    print( "Your command was: " + command + "\nYour parameters were: " + text)
+    return "Got it"
+
+
+@application.route("/file/<id>")
+def return_file(id):
+    try:
+        uuid = UUID(id, 4)
+        return send_file("WaypointFiles/" + id)
+    except:
+        return "Incorrect UUID"
+
+
+#@application.before_request()
+#def stuff():
+#    print("Got random request")
+
+if __name__ == "__main__":
+    application.run()

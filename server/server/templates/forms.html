@@ -1,0 +1,28 @@
+{% macro make_input_field(type, internal_name, label, pattern=None, error_label=None, value="") -%}
+<div class="mdl-grid">
+  <div class="mdl-layout-spacer"></div>
+  <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--8-col mdl-textfield--floating-label">
+    {% if pattern != None %}
+    <input class="mdl-textfield__input" pattern="{{pattern}}" type="{{type}}" name="{{internal_name}}" value="{{ value}}" id="{{internal_name}}">
+    <label class="mdl-textfield__label" for="{{internal_name}}">{{label|safe}}</label>
+    <span class="mdl-textfield__error">{{error_label|safe}}</span>
+    {% else %}
+    <input class="mdl-textfield__input" type="{{type}}" name="{{internal_name}}" id="{{internal_name}}">
+    <label class="mdl-textfield__label" for="{{internal_name}}">{{label|safe}}</label>
+    {% endif %}
+  </div>
+  <div class="mdl-layout-spacer"></div>
+</div>
+{%- endmacro %}
+{% macro make_form(url, error="") -%}
+<form action="{{ url_for(url) }}" method="POST">
+  {{csrf_token()}}
+  {% if error != None %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+  {{ caller() }}
+</form>
+{% endmacro %}
+{% macro csrf_token() -%}
+   <input id="csrf_token" type="hidden" name="csrf_token" value="{{ get_new_csrf_token() }}">
+{%- endmacro %}

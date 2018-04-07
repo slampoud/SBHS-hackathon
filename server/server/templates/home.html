@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% from "forms.html" import csrf_token %}
+{% macro tile_icon(title, color, icon, onclick) %}
+    <div class="mdl-card mdl-cell mdl-cell--2-col mdl-shadow--2dp mdl-cell">
+      <div class="mdl-card__title mdl-color--{{ color }}">
+        <h2 class="mdl-card__title-text">{{ title }}</h2>
+      </div>
+      <div class="mdl-card__actions mdl-card--border mdl-grid">
+        <button class="tall mdl-cell mdl-cell--12-col mdl-button mdl-js-button mdl-button--colored" onclick="{{onclick}}"><i class="large mdl-color-text--blue-grey-400 material-icons" role="presentation">{{icon}}</i></button>
+      </div>
+    </div>
+{%- endmacro %}
+{% macro tile_class(class) %}
+    <div class="mdl-card mdl-cell mdl-cell--3-col mdl-cell--12-col-phone mdl-cell--12-col-tablet mdl-shadow--2dp mdl-cell">
+      <div class="mdl-card__title {{ get_random_color() }}">
+        <h2 class="mdl-card__title-text">{{ class.display_name }}</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <strong>Status: </strong>{{class.status}}<br>
+        <strong>Last Checked: </strong>{{ class.last_checked_str }}
+      </div>
+      <div class="mdl-card__actions mdl-card--border mdl-grid ">
+        <button class="listing-action mdl-cell mdl-cell--6-col mdl-button mdl-js-button mdl-button--colored" onclick="info('{{ class.vsub }}', '{{ class.vcrse }}', '{{ class.vterm }}', '{{ class.vcrn}}',)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">info</i></button>
+        <button class="listing-action mdl-cell mdl-cell--6-col mdl-button mdl-js-button mdl-button--colored" onclick="post('{{ url_for('remove_class')}}', {crn: '{{ class.vcrn }}', term: '{{ class.vterm}}' })"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i></button>
+      </div>
+    </div>
+{%- endmacro %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block nav %}
+<div class="drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+  <header class="drawer-header">
+    <div class="avatar-dropdown">
+      <span>{{ email }}</span>
+    </div>
+  </header>
+  <nav class="navigation mdl-navigation mdl-color--blue-grey-800">
+    <a class="mdl-navigation__link" href="{{ url_for('landing_page') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+    <a class="mdl-navigation__link" href="{{ url_for('add_page') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add</i>Add Class</a>
+    <a class="mdl-navigation__link" href="{{ url_for('logout') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">exit_to_app</i>Log out</a>
+  </nav>
+</div>
+{% endblock %}
+{% block body %}
+{{ csrf_token() }}
+<div class="content">
+  <div class="cards mdl-grid">
+    {% for class in get_users_requests(uuid) %}
+      {{ tile_class(class)}}
+    {% endfor %}
+    {{ tile_icon("Add a Class", "green", "add", "visit('" + url_for('add_page') + "')") }}
+    {{ tile_icon("Account Settings", "green", "settings", "visit('" + url_for('settings_page') + "')") }}
+    {% if role == 2 %}
+      {{ tile_icon("Create UUID", "orange", "playlist_add", "visit('" + url_for('generate') + "')") }}
+      {{ tile_icon("View Accounts", "orange", "apps", "visit('" + url_for('view_all') + "')") }}
+      {{ tile_icon("Message all", "orange", "edit", "visit('" + url_for('message_all') + "')") }}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% from "forms.html" import make_form, make_input_field %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block body %}
+<div class="content">
+  <div class="cards mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div id="login" class="updates mdl-card mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--10-col-phone mdl-shadow--2dp mdl-cell">
+      <div class="mdl-card__title mdl-color--accent">
+        <h2 class="mdl-card__title-text">Log In</h2>
+      </div>
+      {% call make_form("login", error) %}
+      {{ make_input_field("email", "email", "Email") }}
+      {{ make_input_field("password", "password", "Password") }}
+      <div class="mdl-grid">
+        <div class="mdl-layout-spacer"></div>
+        <input type="submit" class="mdl-cell mdl-cell--10-col mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Log In" name="action">
+        <div class="mdl-layout-spacer"></div>
+      </div>
+      <div class="mdl-grid">
+        <a class="mdl-button mdl-js-button mdl-cell mdl-cell--6-col" onclick="forgotPassword()">Forgot Something?</a>
+        <a class="mdl-button mdl-js-button mdl-cell mdl-cell--6-col" href = "{{ url_for('new_account') }}">Create an Account</a>
+      </div>
+      {% endcall %}
+    </div>
+    <div class="mdl-layout-spacer"></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% from "forms.html" import make_form, make_input_field %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block nav %}
+<div class="drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+  <header class="drawer-header">
+    <div class="avatar-dropdown">
+      <span>{{ email }}</span>
+    </div>
+  </header>
+  <nav class="navigation mdl-navigation mdl-color--blue-grey-800">
+    <a class="mdl-navigation__link" href="{{ url_for('landing_page') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+    <a class="mdl-navigation__link" href="{{ url_for('add_page') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add</i>Add Class</a>
+    <a class="mdl-navigation__link" href="{{ url_for('logout') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">exit_to_app</i>Log out</a>
+  </nav>
+</div>
+{% endblock %}
+{% block body %}
+<div class="content">
+  <div class="cards mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div id="verify" class="updates mdl-card mdl-cell mdl-cell--8-col mdl-cell--10-col-tablet mdl-cell--10-col-phone mdl-shadow--2dp mdl-cell">
+      <div class="mdl-card__title mdl-color--orange">
+        <h2 class="mdl-card__title-text">Verify Email</h2>
+      </div>
+      {% call make_form('verify_email', error) %}
+          <p>An email was sent to <strong>{{ email }}</strong> with a verifcation UUID.</p>
+          {{ make_input_field("text", "code", "Verification UUID", "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", "Format: <code>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX</code>") }}
+          <div class="mdl-grid">
+          <div class="mdl-layout-spacer"></div>
+          <input type="submit" class="mdl-cell mdl-cell--10-col mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Verify Email" name="action">
+          <div class="mdl-layout-spacer"></div>
+        </div>
+      {% endcall %}
+    </div>
+    <div class="mdl-layout-spacer"></div>
+  </div>
+</div>
+{% endblock %}
+
+
