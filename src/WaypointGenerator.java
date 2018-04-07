@@ -12,7 +12,7 @@ public class WaypointGenerator {
     public static void main(String[] args) throws FileNotFoundException {
         String begin = "QGC WPL 110\n";
         begin += "0\t1\t3\t112\t1\t0\t0\t0\t0\t0\t0\t1\n";
-        begin += "1\t0\t3\t211\t1\t0\t0\t0\t0\t0\t1\n";
+        begin += "1\t0\t3\t211\t0\t0\t0\t0\t0\t0\t0\t1\n";
         begin += "2\t0\t3\t22\t0\t0\t0\t0\t0.0\t0.0\t20.0\t1\n";
         BufferedReader in = new BufferedReader(new FileReader("/Users/Guest/Downloads/SBHS-hackathon-master/src/Coordinates.txt"));
         ArrayList<float[]> coords = new ArrayList<float[]>();
@@ -32,7 +32,7 @@ public class WaypointGenerator {
                 numLine++;
             }
             String end = numLine + "\t0\t3\t21\t0\t0\t0\t0\t" + coords.get(coords.size() - 1)[0] + "\t" + coords.get(coords.size() - 1)[1] + "\t0\t1\n";
-            end += ++numLine + "\t0\t3\t211\t1\t0\t0\t0\t0\t0\t1";
+            end += ++numLine + "\t0\t3\t211\t1\t0\t0\t0\t0\t0\t0\t1";
             writer.write(end);
             writer.close();
             File waypoints = new File("/Users/Guest/Downloads/SBHS-hackathon-master/src/Waypoints.waypoints");
