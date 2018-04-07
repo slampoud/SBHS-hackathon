@@ -20,9 +20,9 @@ def slack_response():
     
     locations = get_your_loc_burrito_loc(text)
     
-    uuid = FileGenerator.burrito(locations[0], locations[1])
+    link = FileGenerator.burrito(locations[0], locations[1])
     
-    return "File available at: fortnightdesigns.com/file/" + uuid
+    return link
     
 
 #text in the format <your location>@<burrito location>

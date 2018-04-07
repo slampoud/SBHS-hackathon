@@ -17,7 +17,6 @@ def burrito(me, burrito):
     text = urllib2.urlopen(
         "https://maps.googleapis.com/maps/api/directions/json?origin=" + burrito_place + "&destination=" + where_we_are + "&key=" + API_KEY).read()
     conv_text = text.decode("utf-8")
-    print(conv_text)
 
 
 
@@ -51,42 +50,41 @@ def generateWaypoint(coord_list):
     grab = "\t0\t3\t211\t0\t0\t0\t0\t0\t0\t0\t1\n";
     lift = "\t0\t3\t22\t0\t0\t0\t0\t0.0\t0.0\t20.0\t1\n";
 
-    u = uuid.uuid4()
-
-    output = open("WaypointFiles/" + str(u), "w")
     coords = []
     line_num = 3
 
-    output.write(begin)
-    output.write(str(1) + grab)
-    output.write(str(2) + lift)
+    text = begin
+    text += str(1) + grab
+    text += str(2) + lift
 
     for coord in coord_list:
         coords.append(coord.split(','))
 
     for x in range(len(coords)):
-        output.write(str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n")
+        text += str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n"
         line_num += 1
 
     land = "\t0\t3\t21\t0\t0\t0\t0\t" + coords[len(coords) - 1][0] + "\t" + coords[len(coords) - 1][1] + "\t0\t1\n"
-    output.write(str(line_num) + land)
+    text += str(line_num) + land
     line_num += 1
     drop = "\t0\t3\t211\t1\t0\t0\t0\t0\t0\t0\t1\n"
-    output.write(str(line_num) + drop)
+    text += str(line_num) + drop
     line_num += 1
-    output.write(str(line_num) + lift)
+    text += str(line_num) + lift
     line_num += 1
 
-    for i in range(len(coords) - 2, -1)
-        output.write(str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n")
+    for i in range(len(coords) - 2, -1, -1):
+        text += str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n"
         line_num += 1
 
     return_to_start = "\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t1\n"
-    output.write(str(line_num) + return_to_start)
+    text += str(line_num) + return_to_start
     line_num += 1
-    output.write(str(line_num) + drop)
-    output.close()
-
-    return str(u)
+    text += str(line_num) + drop
+    
+    d = urllib.parse.urlencode(dict(text=text))
+    response = urllib.request.urlopen("https://file.io", data=d.encode()).read().decode()
+    print(response)
+    return json.loads(response)['link']
 
 
