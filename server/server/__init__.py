@@ -1,6 +1,6 @@
 
 from flask import Flask, session, Blueprint, send_from_directory, render_template, send_file, url_for, abort, redirect, request, make_response
-import routing
+import FileGenerator
 
 from uuid import UUID
 
@@ -18,7 +18,7 @@ def slack_response():
 
     locations = get_your_loc_burrito_loc(text)
     
-    uuid = routing.write_file_between(locations)
+    uuid = FileGenerator.burrito(locations[0], locations[1])
     
     return "File available at: fortnightdesigns.com/file/" + uuid
     
