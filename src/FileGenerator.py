@@ -63,14 +63,9 @@ def generateWaypoint(coord_list):
     for x in range(len(coords)):
         text += str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n"
         line_num += 1
-
-    land = "\t0\t3\t21\t0\t0\t0\t0\t" + coords[len(coords) - 1][0] + "\t" + coords[len(coords) - 1][1] + "\t0\t1\n"
-    text += str(line_num) + land
-    line_num += 1
+        
     drop = "\t0\t3\t211\t1\t0\t0\t0\t0\t0\t0\t1\n"
     text += str(line_num) + drop
-    line_num += 1
-    text += str(line_num) + lift
     line_num += 1
 
     for i in range(len(coords) - 2, -1, -1):
@@ -79,12 +74,8 @@ def generateWaypoint(coord_list):
 
     return_to_start = "\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t1\n"
     text += str(line_num) + return_to_start
-    line_num += 1
-    text += str(line_num) + drop
     
     d = urllib.parse.urlencode(dict(text=text))
     response = urllib.request.urlopen("https://file.io", data=d.encode()).read().decode()
     print(response)
     return json.loads(response)['link']
-
-
