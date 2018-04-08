@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import geopy
 
 API_KEY = "AIzaSyD_9P1-rMHgIgFGtltvzk3a-RMLMvFguxs"
 #import urllib2
@@ -66,7 +67,7 @@ def generateWaypoint(coord_list):
 
     for coord in coord_list:
         coords.append(coord.split(','))
-
+    
     for x in range(len(coords)):
         text += str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n"
         line_num += 1
@@ -75,7 +76,7 @@ def generateWaypoint(coord_list):
     text += str(line_num) + drop
     line_num += 1
 
-    for i in range(len(coords) - 2, -1, -1):
+    for x in range(len(coords) - 2, -1, -1):
         text += str(line_num) + "\t0\t3\t16\t0\t0\t0\t0\t" + coords[x][0] + "\t" + coords[x][1] + "\t7.0\t1\n"
         line_num += 1
 
@@ -88,5 +89,7 @@ def generateWaypoint(coord_list):
     
 
     ret = {}
+    ret['coords'] = coords
+    ret['link'] = json.loads(response)['link']
     
-    return json.loads(response)['link']
+    return ret
