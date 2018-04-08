@@ -7,6 +7,13 @@ API_KEY = "AIzaSyD_9P1-rMHgIgFGtltvzk3a-RMLMvFguxs"
 import urllib
 import urllib.request as urllib2
 
+def getDuration(js):
+    distance = 0
+    duration = 44
+    organized_data = json.loads(js)
+    distance += int(organized_data["routes"][0]["legs"][0]["distance"]["value"])
+    duration += distance/5
+    return duration
 
 def burrito(me, burrito):
     # burrito_place = urllib.quote_plus("Lito's Mexican Restaurant Santa Barbara, CA")
