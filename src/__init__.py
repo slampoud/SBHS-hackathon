@@ -5,6 +5,9 @@ import FileGenerator
 from uuid import UUID
 
 
+burritos = []
+burritoCount = 0
+
 print("Setting up...")
 application = Flask(__name__)
 
@@ -20,9 +23,9 @@ def slack_response():
     
     locations = get_your_loc_burrito_loc(text)
     
-    link = FileGenerator.burrito(locations[0], locations[1])
+    burritoInfo = FileGenerator.burrito(locations[0], locations[1])
     
-    return link
+    return burritoInfo['link']
     
 
 #text in the format <your location>@<burrito location>
@@ -31,17 +34,11 @@ def get_your_loc_burrito_loc(text):
     return text.split("@")
 
 
-@application.route("/file/<i>")
-def return_file(i):
-    try:
-        print(i)
-        uuid = UUID(hex=i, version=4)
-        print(uuid)
-        return send_from_directory("WaypointFiles", str(uuid))
-    except Exception as e:
-        print(e)
-        return "Incorrect UUID"
-
+@application.route("/status/", methods=["POST", "GET"])
+def get_status():
+    command = request.form.get("command")
+    text = request.form.get("text")
+    
 
 if __name__ == "__main__":
     application.run()

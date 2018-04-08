@@ -78,4 +78,8 @@ def generateWaypoint(coord_list):
     d = urllib.parse.urlencode(dict(text=text))
     response = urllib.request.urlopen("https://file.io", data=d.encode()).read().decode()
     print(response)
+    
+
+    ret = {}
+    
     return json.loads(response)['link']
